@@ -6,10 +6,9 @@
 from .._platform import Platform
 from ._models import SectionSpec
 from ._qq import QQ_SECTIONS
-from ._shared import SHARED_SECTIONS
 from ._tg import PROXY_SECTION
 
 SECTIONS_BY_PLATFORM: dict[Platform, tuple[SectionSpec, ...]] = {
-    Platform.TELEGRAM: (PROXY_SECTION, *SHARED_SECTIONS),
-    Platform.QQ: (*SHARED_SECTIONS, *QQ_SECTIONS),
+    Platform.TELEGRAM: (PROXY_SECTION,),
+    Platform.QQ: QQ_SECTIONS,
 }
