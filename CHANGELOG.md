@@ -12,6 +12,7 @@
 - **配置段与字段声明自带文案**：`SectionSpec` 必带 `title`，`FieldSpec` 必带 `label` 与 `desc`，按旧形状构造会因缺必填参数报错。
 - **配置大类归属撤出声明**：`ConfigGroup` 从公开名里撤掉，`SectionSpec.group` 同时撤销，大类改由配置来源身份定，仍交 `group=` 的旧写法构造即报错。
 - **模型段的成员名跟着段名串改**：`ConfigSection.AI = "ai"` 换成 `ConfigSection.MODEL = "model"`，配置文件里该段的表名跟着从 `ai` 变成 `model`。
+- **配置项身份换成带来源的对象**：`ConfigPath` 由点分字符串改为装来源、段、键三段的冻结对象，`ConfigKey.path` 多收一个来源参数，`FieldSpec.path` 撤销，拿点分原串当身份的代码要改成取对象。
 
 ### ✨ Added
 

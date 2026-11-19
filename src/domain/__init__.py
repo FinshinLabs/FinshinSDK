@@ -58,6 +58,7 @@ from ._task import TaskPayload, TaskStatus, is_own_action
 from .config import (
     SECTIONS_BY_PLATFORM,
     ConfigKey,
+    ConfigPath,
     ConfigSection,
     ConfigValue,
     FieldSpec,
@@ -130,6 +131,7 @@ __all__ = [
     "FieldKey",
     # 配置结构
     "ConfigValue",
+    "ConfigPath",
     "ConfigSection",
     "ConfigKey",
     "ProxyMode",

@@ -1,15 +1,15 @@
 """配置结构值对象
 
 - 定义配置值类型别名
-- 定义段名与键名枚举
+- 定义配置项身份、段名与键名枚举
 - 定义代理模式取值域
 - 定义字段、段与来源声明的结构体
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import StrEnum
-
-from ..ids import ConfigPath
 
 # 单个 TOML 配置值
 ConfigValue = str | float | list[str] | None
@@ -47,9 +47,25 @@ class ConfigKey(StrEnum):
     RECORD_KEEP = "record_keep"
     WAITING = "waiting"
 
-    def path(self, section: ConfigSection) -> ConfigPath:
-        """拼点分路径"""
-        return ConfigPath(f"{section}.{self}")
+    def path(self, source: str, section: ConfigSection) -> ConfigPath:
+        """拼出配置项的完整身份"""
+        return ConfigPath(source=source, section=section, key=self)
+
+
+@dataclass(frozen=True, slots=True)
+class ConfigPath:
+    """一个配置项的完整身份
+
+    - 来源串为装配时拼出的身份码，本体侧只有来源类型一段
+    - 屏上文案沿用段与键的点分写法
+    """
+
+    source: str
+    section: ConfigSection
+    key: ConfigKey
+
+    def __str__(self) -> str:
+        return f"{self.section}.{self.key}"
 
 
 class ProxyMode(StrEnum):
@@ -83,11 +99,6 @@ class FieldSpec:
     options: tuple[str, ...] = ()
     option_labels: tuple[str, ...] = ()
     bounds: tuple[float, float] | None = None
-
-    @property
-    def path(self) -> ConfigPath:
-        """拼点分路径"""
-        return ConfigPath(f"{self.section}.{self.key}")
 
 
 @dataclass(frozen=True, slots=True)

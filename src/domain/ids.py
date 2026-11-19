@@ -14,7 +14,6 @@ ContainerKey = NewType("ContainerKey", str)  # g/u 前缀
 SessionKey = NewType("SessionKey", str)  # SessionDTO.key
 MessageKey = NewType("MessageKey", str)  # MsgReferenceDTO.key
 PrincipalKey = NewType("PrincipalKey", str)  # PrincipalDTO.key
-ConfigPath = NewType("ConfigPath", str)  # 配置段.键
 
 # 平台原始标识
 ChatId = NewType("ChatId", str)

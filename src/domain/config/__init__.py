@@ -1,11 +1,12 @@
 """配置结构门面
 
-- 代发配置值类型、段与键枚举、字段与段结构体
+- 代发配置值类型、配置项身份、段与键枚举、字段与段结构体
 - 代发按平台拼装的段全表
 """
 
 from ._models import (
     ConfigKey,
+    ConfigPath,
     ConfigSection,
     ConfigValue,
     FieldSpec,
@@ -18,6 +19,8 @@ from ._table import SECTIONS_BY_PLATFORM
 __all__ = [
     # 值类型
     "ConfigValue",
+    # 配置项身份
+    "ConfigPath",
     # 段与键
     "ConfigSection",
     "ConfigKey",

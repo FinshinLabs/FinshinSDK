@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from ._adapter import BaseAdapter
 from .domain import (
     BackgroundLoop,
+    ConfigPath,
     MomentRun,
     PlatformMoment,
     QueuedAction,
@@ -16,7 +17,9 @@ from .domain import (
 from .dto import PluginManifestDTO
 
 # 单通道探测：收 token 与代理，回生效代理与每个坏掉字段的异常
-ChannelProbe = Callable[[str, str], Awaitable[tuple[str | None, dict[str, Exception]]]]
+ChannelProbe = Callable[
+    [str, str], Awaitable[tuple[str | None, dict[ConfigPath | str, Exception]]]
+]
 
 
 @dataclass(frozen=True, slots=True)
