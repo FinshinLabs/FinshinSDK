@@ -1,9 +1,9 @@
 """配置结构值对象
 
 - 定义配置值类型别名
-- 定义段名、键名与界面大类枚举
+- 定义段名与键名枚举
 - 定义代理模式取值域
-- 定义字段与段结构体
+- 定义字段、段与来源声明的结构体
 """
 
 from dataclasses import dataclass
@@ -27,22 +27,6 @@ class ConfigSection(StrEnum):
     MODEL = "model"
     CHORE = "chore"
     DATA = "data"
-
-
-class ConfigGroup(StrEnum):
-    """配置段所属的界面大类
-
-    - 面板左侧大标签，一个大类下挂若干段页签
-    """
-
-    BOT = "bot"
-    AI = "ai"
-
-
-CONFIG_GROUP_TITLES: dict[ConfigGroup, str] = {
-    ConfigGroup.BOT: "Bot 设置",
-    ConfigGroup.AI: "AI 设置",
-}
 
 
 class ConfigKey(StrEnum):
@@ -111,10 +95,20 @@ class SectionSpec:
     """一个配置段的结构定义
 
     - 字段元组顺序即面板该页字段顺序
-    - 所属大类即面板左侧大标签
     """
 
     section: ConfigSection
     title: str
-    group: ConfigGroup
     fields: tuple[FieldSpec, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class SourceDeclaration:
+    """一份配置来源声明
+
+    - 标题定面板左列那一行，段组顺序即该来源的页签顺序
+    - 来源归属哪一类、身份码是什么由本体定，交出者不写
+    """
+
+    title: str
+    sections: tuple[SectionSpec, ...]

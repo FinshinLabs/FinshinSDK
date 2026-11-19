@@ -1,6 +1,6 @@
 """平台装配契约
 
-- 定义适配器入口模块交出的三件与装配结果的数据形状
+- 定义适配器入口模块交出的四件与装配结果的数据形状
 """
 
 from collections.abc import Awaitable, Callable, Sequence
@@ -36,12 +36,14 @@ class PlatformAssembly:
 
 @dataclass(frozen=True, slots=True)
 class AdapterParts:
-    """适配器入口模块交出的三件
+    """适配器入口模块交出的四件
 
     - 收 token 与代理，回这个平台的运行时
     - 引擎预热只付导入费
+    - 标题是本平台的显示名，配置窗左列那一行用它
     """
 
+    title: str
     assemble: Callable[[str, str | None], BaseAdapter]
     channel_probe: ChannelProbe
     engine_preload: Callable[[], None]

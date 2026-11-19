@@ -2,7 +2,7 @@
 
 - 插件加载优先级、相关文件、清单键名与对象记号的词表
 - 插件清单标量字段的类型、必填与默认
-- 路由清单、常驻协程、任务处理与时机订阅的签名
+- 路由清单、常驻协程、任务处理、时机订阅与来源声明的签名
 - 平台侧的路由挂载口
 - 插件之间抢命令名的判定
 """
@@ -11,6 +11,8 @@ from collections.abc import Awaitable, Callable, Coroutine, Sequence
 from dataclasses import dataclass
 from enum import IntEnum, StrEnum, auto
 from typing import Any, Protocol
+
+from .config import SourceDeclaration
 
 PLUGINS_PKG = "bundled"  # 随包插件树顶层包名，包存在性扫描与动态导入路径共用同值
 INSTALLED_PLUGINS_NAME = "finshin/plugin"  # 外部插件挂载点
@@ -88,7 +90,7 @@ class MomentSubscription:
 class BasePlugin:
     """插件入口基类
 
-    - 四只方法都可以不写，不写即没有那一类能力
+    - 五只方法都可以不写，不写即没有那一类能力
     - 交出的清单按交出的顺序生效，本体不认识具体能力
     """
 
@@ -107,6 +109,10 @@ class BasePlugin:
     def platform_moments(self) -> tuple[MomentSubscription, ...]:
         """订阅的平台机会清单"""
         return ()
+
+    def source_declaration(self) -> SourceDeclaration:
+        """本插件交出的配置来源，段组空即本插件不带配置"""
+        return SourceDeclaration(title="", sections=())
 
 
 class RouteSink(Protocol):

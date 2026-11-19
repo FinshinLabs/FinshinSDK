@@ -5,14 +5,13 @@
 """
 
 from ._models import (
-    CONFIG_GROUP_TITLES,
-    ConfigGroup,
     ConfigKey,
     ConfigSection,
     ConfigValue,
     FieldSpec,
     ProxyMode,
     SectionSpec,
+    SourceDeclaration,
 )
 from ._table import SECTIONS_BY_PLATFORM
 
@@ -22,14 +21,12 @@ __all__ = [
     # 段与键
     "ConfigSection",
     "ConfigKey",
-    # 界面大类
-    "ConfigGroup",
-    "CONFIG_GROUP_TITLES",
     # 代理模式取值域
     "ProxyMode",
     # 结构体
     "FieldSpec",
     "SectionSpec",
+    "SourceDeclaration",
     # 平台段全表
     "SECTIONS_BY_PLATFORM",
 ]

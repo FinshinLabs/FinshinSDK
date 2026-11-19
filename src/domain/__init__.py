@@ -56,15 +56,14 @@ from ._plugin import (
 from ._role import ChatRole, CommandRole
 from ._task import TaskPayload, TaskStatus, is_own_action
 from .config import (
-    CONFIG_GROUP_TITLES,
     SECTIONS_BY_PLATFORM,
-    ConfigGroup,
     ConfigKey,
     ConfigSection,
     ConfigValue,
     FieldSpec,
     ProxyMode,
     SectionSpec,
+    SourceDeclaration,
 )
 
 __all__ = [
@@ -133,10 +132,9 @@ __all__ = [
     "ConfigValue",
     "ConfigSection",
     "ConfigKey",
-    "ConfigGroup",
-    "CONFIG_GROUP_TITLES",
     "ProxyMode",
     "FieldSpec",
     "SectionSpec",
+    "SourceDeclaration",
     "SECTIONS_BY_PLATFORM",
 ]

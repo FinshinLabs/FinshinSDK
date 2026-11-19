@@ -1,6 +1,6 @@
 """接口包门面
 
-- 代发插件侧的入口基类与它要交的四份清单
+- 代发插件侧的入口基类与它要交的五份清单
 - 代发处理上下文与平台交代的那一份能力
 - 代发适配器要实现的基类与交互端口
 - 代发日志与断链上报两只公开件，实现由本体绑定
@@ -22,6 +22,7 @@ from .domain import (
     MomentSubscription,
     PlatformMoment,
     QueuedAction,
+    SourceDeclaration,
 )
 
 # 接口包自身的版本号，装载前比对适配器清单的接口要求时取它
@@ -37,6 +38,7 @@ __all__ = [
     "QueuedAction",
     "PlatformMoment",
     "MomentSubscription",
+    "SourceDeclaration",
     "HandlerContext",
     "CapabilityCall",
     # 适配器

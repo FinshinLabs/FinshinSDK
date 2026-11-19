@@ -4,7 +4,6 @@
 """
 
 from ._models import (
-    ConfigGroup,
     ConfigKey,
     ConfigSection,
     FieldSpec,
@@ -15,7 +14,6 @@ from ._models import (
 PROXY_SECTION = SectionSpec(
     section=ConfigSection.PROXY,
     title="连接与代理",
-    group=ConfigGroup.BOT,
     fields=(
         FieldSpec(
             section=ConfigSection.PROXY,
