@@ -9,6 +9,7 @@
 ### ⚠️ Breaking Changes
 
 - **配置段与字段声明自带文案**：`SectionSpec` 必带 `title`，`FieldSpec` 必带 `label` 与 `desc`，按旧形状构造会因缺必填参数报错。
+- **模型段的成员名跟着段名串改**：`ConfigSection.AI = "ai"` 换成 `ConfigSection.MODEL = "model"`，配置文件里该段的表名跟着从 `ai` 变成 `model`。
 
 ## [0.1.0] - 2026-11-15
 

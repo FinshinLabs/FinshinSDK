@@ -18,13 +18,13 @@ ConfigValue = str | float | list[str] | None
 class ConfigSection(StrEnum):
     """配置段名
 
-    - 与 config.toml 顶层表名一一对应
+    - 装配时拼上来源前缀写成点分段名
     """
 
     # Telegram 专属段
     PROXY = "proxy"
 
-    AI = "ai"
+    MODEL = "model"
     CHORE = "chore"
     DATA = "data"
 
@@ -71,7 +71,7 @@ class ConfigKey(StrEnum):
 class ProxyMode(StrEnum):
     """代理模式协议串
 
-    - 配置字段 proxy.proxy_mode 与校验编排共用
+    - 配置字段 proxy_mode 与校验编排共用
     - Telegram 专属取值域
     """
 
