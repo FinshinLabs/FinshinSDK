@@ -39,6 +39,12 @@ class ConfigGroup(StrEnum):
     AI = "ai"
 
 
+CONFIG_GROUP_TITLES: dict[ConfigGroup, str] = {
+    ConfigGroup.BOT: "Bot 设置",
+    ConfigGroup.AI: "AI 设置",
+}
+
+
 class ConfigKey(StrEnum):
     """配置键名
 
@@ -87,8 +93,11 @@ class FieldSpec:
     key: ConfigKey
     value_type: type
     default: ConfigValue
+    label: str
+    desc: str
     required: bool = False
     options: tuple[str, ...] = ()
+    option_labels: tuple[str, ...] = ()
     bounds: tuple[float, float] | None = None
 
     @property
@@ -106,5 +115,6 @@ class SectionSpec:
     """
 
     section: ConfigSection
+    title: str
     group: ConfigGroup
     fields: tuple[FieldSpec, ...]

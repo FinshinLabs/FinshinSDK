@@ -4,10 +4,10 @@
 """
 
 from ._adapter import (
+    ADAPTER_DECLARATION_FILE,
     ADAPTER_ENTRY_ATTR,
     ADAPTER_ENTRY_GROUP,
     ADAPTER_MANIFEST_FIELDS,
-    ADAPTER_DECLARATION_FILE,
     ADAPTERS_PKG,
     AdapterFieldSpec,
     AdapterManifestKey,
@@ -56,6 +56,7 @@ from ._plugin import (
 from ._role import ChatRole, CommandRole
 from ._task import TaskPayload, TaskStatus, is_own_action
 from .config import (
+    CONFIG_GROUP_TITLES,
     SECTIONS_BY_PLATFORM,
     ConfigGroup,
     ConfigKey,
@@ -133,6 +134,7 @@ __all__ = [
     "ConfigSection",
     "ConfigKey",
     "ConfigGroup",
+    "CONFIG_GROUP_TITLES",
     "ProxyMode",
     "FieldSpec",
     "SectionSpec",

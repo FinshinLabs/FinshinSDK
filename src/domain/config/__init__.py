@@ -5,6 +5,7 @@
 """
 
 from ._models import (
+    CONFIG_GROUP_TITLES,
     ConfigGroup,
     ConfigKey,
     ConfigSection,
@@ -23,6 +24,7 @@ __all__ = [
     "ConfigKey",
     # 界面大类
     "ConfigGroup",
+    "CONFIG_GROUP_TITLES",
     # 代理模式取值域
     "ProxyMode",
     # 结构体
