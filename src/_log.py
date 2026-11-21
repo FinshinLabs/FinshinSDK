@@ -19,6 +19,8 @@ class LogLevel(StrEnum):
 # 宿主交来的实现，异常位可空
 _LogSink: TypeAlias = Callable[[str, LogLevel, str, BaseException | None], None]
 
+_UNBOUND = "日志件还没绑上实现"
+
 _sink: _LogSink | None = None
 
 
@@ -37,5 +39,5 @@ def log(
     - 带异常即由实现补一行调试档
     """
     if _sink is None:
-        raise RuntimeError("日志件还没绑上实现")
+        raise RuntimeError(_UNBOUND)
     _sink(source, level, msg, exc)

@@ -10,6 +10,8 @@ from typing import TypeAlias
 _FailureSink: TypeAlias = Callable[[str, BaseException, str | None], None]
 _RecoverySink: TypeAlias = Callable[[], None]
 
+_UNBOUND = "断链上报件还没绑上实现"
+
 _on_failure: _FailureSink | None = None
 _on_recovery: _RecoverySink | None = None
 
@@ -24,12 +26,12 @@ def bind_link_report(on_failure: _FailureSink, on_recovery: _RecoverySink) -> No
 def link_down(api: str, error: BaseException, proxy: str | None) -> None:
     """报一次网络层失败"""
     if _on_failure is None:
-        raise RuntimeError("断链上报件还没绑上实现")
+        raise RuntimeError(_UNBOUND)
     _on_failure(api, error, proxy)
 
 
 def link_up() -> None:
     """报一次成功"""
     if _on_recovery is None:
-        raise RuntimeError("断链上报件还没绑上实现")
+        raise RuntimeError(_UNBOUND)
     _on_recovery()

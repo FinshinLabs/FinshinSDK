@@ -9,6 +9,8 @@ from typing import Any, ClassVar
 
 from ..dto import MsgReferenceDTO
 
+_UNKNOWN_SCHEME = "未知协议"
+
 
 class BotError(Exception):
     """自定义异常基类
@@ -67,7 +69,7 @@ class ProxyError(ConnectivityError):
 class ProxySchemeError(ProxyError):
     """代理协议头错误"""
 
-    def __init__(self, scheme: str = "未知协议", proxy: str = "") -> None:
+    def __init__(self, scheme: str = _UNKNOWN_SCHEME, proxy: str = "") -> None:
         self.scheme = scheme
         super().__init__(proxy)
 
