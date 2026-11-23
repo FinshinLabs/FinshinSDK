@@ -20,6 +20,7 @@
 
 ### ✨ Added
 
+- **插件运行期异常基类**：新增 `PluginError`，外部插件的运行期错误统一挂它下面。
 - **配置来源可交保存轮检查计划**：`SourceDeclaration` 新增可选 `probe` 与 `probe_label`，`probe` 吃 `ConfigValues` 回一份 `ConnectionPlan`，保存配置时随平台那轮并进进度表。
 - **连通检查计划**：`ConnectionPlan`、`ProbeChannel`、`ProbeRow`、`ProbeResult`、`ProbeOutcome` 与 `PlanVerdict` 一起交出，进度行、每路预算、收尾裁决与提示话术都由适配器决定，`PlanVerdict` 新增 `fatal` 旗。
 - **字段显隐与归属标记**：`FieldCondition`、`FieldSpec.visible_when` 与 `FieldSpec.tags`，按同段另一个字段的取值决定一行显不显示，并给字段挂归属标记。

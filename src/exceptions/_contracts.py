@@ -1,11 +1,12 @@
 """异常契约
 
 - 定义所有自定义异常的基类与致命等级
+- 定义插件运行期异常基类
 - 定义连接性异常与探测超时
 - 定义领域异常基类与消息消失错
 """
 
-from typing import Any, ClassVar
+from typing import ClassVar
 
 from ..dto import MessageRefDTO
 
@@ -13,16 +14,14 @@ from ..dto import MessageRefDTO
 class BotError(Exception):
     """自定义异常基类
 
-    - 关键字参数存为属性供文案模板渲染
     - fatal 定致命等级，兜底那侧按它决定弹窗还是回落向导
     """
 
     fatal: ClassVar[bool] = False
 
-    def __init__(self, **kwargs: Any) -> None:
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-        super().__init__()
+
+class PluginError(BotError):
+    """插件运行期异常基类"""
 
 
 class ConnectivityError(BotError):

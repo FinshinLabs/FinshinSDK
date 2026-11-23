@@ -8,6 +8,7 @@ from ._contracts import (
     ConnectivityError,
     DomainError,
     MessageVanishedError,
+    PluginError,
     ProbeCrashedError,
     ProbeTimeoutError,
     ServerUnreachableError,
@@ -16,6 +17,7 @@ from ._contracts import (
 __all__ = [
     # 基类
     "BotError",
+    "PluginError",
     # 领域
     "DomainError",
     "MessageVanishedError",

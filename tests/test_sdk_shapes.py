@@ -2,6 +2,7 @@
 
 - 覆盖配置项身份、实例身份码与各 DTO 的身份串
 - 覆盖进度行状态
+- 覆盖插件运行期异常基类
 """
 
 from finshin_sdk.domain import (
@@ -25,6 +26,7 @@ from finshin_sdk.dto import (
     TaskDTO,
     TaskRequestDTO,
 )
+from finshin_sdk.exceptions import BotError, PluginError
 
 
 def _principal() -> PrincipalDTO:
@@ -103,3 +105,8 @@ def test_row_status_has_four_values() -> None:
     """进度行状态四值齐备，新行默认待跑"""
     assert {item.value for item in RowStatus} == {"pending", "ok", "fail", "skip"}
     assert ProbeRow(row_id="r1", title="直连").status is RowStatus.PENDING
+
+
+def test_plugin_error_subclasses_bot_error() -> None:
+    """插件运行期异常挂在自定义异常基类下面"""
+    assert issubclass(PluginError, BotError)
