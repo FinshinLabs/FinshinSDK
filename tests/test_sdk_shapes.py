@@ -3,13 +3,21 @@
 - 覆盖配置项身份、实例身份码与各 DTO 的身份串
 - 覆盖进度行状态
 - 覆盖插件运行期异常基类
+- 覆盖插件声明与帮助形状
 """
 
+from finshin_sdk import (
+    HelpCommand,
+    HelpFlag,
+    HelpSection,
+    PluginDeclaration,
+)
 from finshin_sdk.domain import (
     ConfigPath,
     ContainerCode,
     MessageId,
     PlatformCode,
+    PluginFileName,
     ProbeRow,
     ProfileKey,
     RowStatus,
@@ -21,6 +29,7 @@ from finshin_sdk.domain import (
 )
 from finshin_sdk.dto import (
     MessageRefDTO,
+    PluginManifestDTO,
     PrincipalDTO,
     SessionDTO,
     TaskDTO,
@@ -110,3 +119,43 @@ def test_row_status_has_four_values() -> None:
 def test_plugin_error_subclasses_bot_error() -> None:
     """插件运行期异常挂在自定义异常基类下面"""
     assert issubclass(PluginError, BotError)
+
+
+def test_plugin_declaration_defaults_to_empty_tuples() -> None:
+    """插件声明默认不带资源与帮助段"""
+    declaration = PluginDeclaration(title="示例", summary="说明")
+    assert declaration.assets == ()
+    assert declaration.help == ()
+
+
+def test_plugin_declaration_composes_assets_and_help() -> None:
+    """插件声明可交资源、帮助开关、命令与分段"""
+    command = HelpCommand(
+        cmd="/demo",
+        desc="示例命令",
+        flags=(HelpFlag(name="-n", desc="次数"),),
+    )
+    section = HelpSection(section="示例", commands=(command,))
+    declaration = PluginDeclaration(
+        title="示例",
+        summary="说明",
+        assets=("样例资源",),
+        help=(section,),
+    )
+    assert declaration.assets == ("样例资源",)
+    assert declaration.help == (section,)
+
+
+def test_plugin_file_name_points_to_declaration_module() -> None:
+    """插件声明文件名指向代码文件"""
+    assert PluginFileName.DECLARATION.value == "_declaration.py"
+
+
+def test_plugin_manifest_holds_declaration() -> None:
+    """插件加载记录收代码声明"""
+    declaration = PluginDeclaration(title="示例", summary="说明")
+    manifest = PluginManifestDTO(
+        name="demo", module="demo", deps=(), declaration=declaration
+    )
+    assert manifest.declaration is declaration
+    assert manifest.deps == ()

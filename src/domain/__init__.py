@@ -6,7 +6,6 @@
 from ._adapter import (
     ADAPTER_ENTRY_ATTR,
     ADAPTER_ENTRY_GROUP,
-    ADAPTER_MANIFEST_FILE,
     ADAPTER_MANIFEST_TABLE,
     AdapterManifestKeys,
 )
@@ -33,19 +32,21 @@ from ._plan import (
 )
 from ._platform import ChatScope, make_profile_key, platform_of_key
 from ._plugin import (
-    PLUGIN_MANIFEST_TABLE,
+    PLUGIN_NAME_PREFIX,
     ActionRun,
     BackgroundLoop,
     BasePlugin,
     CommandTaken,
-    HelpKeys,
+    HelpCommand,
+    HelpFlag,
+    HelpSection,
     MessageRoute,
     MomentRun,
     MomentSubscription,
     PlatformMoment,
     PluginClaim,
+    PluginDeclaration,
     PluginFileName,
-    PluginManifestKeys,
     PluginMark,
     PluginPriority,
     QueuedAction,
@@ -98,7 +99,6 @@ __all__ = [
     # 适配器
     "ADAPTER_ENTRY_ATTR",
     "ADAPTER_ENTRY_GROUP",
-    "ADAPTER_MANIFEST_FILE",
     "AdapterManifestKeys",
     "ADAPTER_MANIFEST_TABLE",
     # 插件
@@ -114,9 +114,11 @@ __all__ = [
     "PluginClaim",
     "PluginFileName",
     "PluginMark",
-    "PluginManifestKeys",
-    "PLUGIN_MANIFEST_TABLE",
-    "HelpKeys",
+    "HelpFlag",
+    "HelpCommand",
+    "HelpSection",
+    "PluginDeclaration",
+    "PLUGIN_NAME_PREFIX",
     "RouteSink",
     "QueuedAction",
     "ActionRun",

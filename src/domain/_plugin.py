@@ -1,8 +1,7 @@
-"""插件对象
+"""插件声明与运行对象
 
-- 插件加载优先级、相关文件、清单键名与对象记号的词表
-- 插件清单标量字段的类型、必填与默认
-- 路由清单、常驻协程、任务处理、时机订阅与来源声明的签名
+- 插件资源、帮助菜单、标题与说明的声明结构
+- 路由、常驻协程、任务处理、时机订阅与来源声明的签名
 - 平台侧的路由挂载口
 - 命令名抢占判定的记录与结果形状
 """
@@ -12,6 +11,8 @@ from dataclasses import dataclass
 from enum import IntEnum, StrEnum, auto
 from typing import Any, Protocol
 
+from ._command import FlagValue
+from ._role import CommandRole
 from .config import SourceDeclaration
 
 # 插件声明的无参常驻协程，随 Bot 服务起停
@@ -87,7 +88,7 @@ class BasePlugin:
     """插件入口基类
 
     - 五只方法都可以不写，不写即没有那一类能力
-    - 交出的清单按交出的顺序生效，本体不认识具体能力
+    - 交出的声明按交出的顺序生效，本体不认识具体能力
     """
 
     def message_routes(self) -> tuple[MessageRoute, ...]:
@@ -133,7 +134,7 @@ class PluginPriority(IntEnum):
 class PluginClaim:
     """命令名抢占判定的一条插件记录
 
-    - 命令名项是本插件清单声明的，没声明即空
+    - 命令名项是本插件帮助声明的，没声明即空
     """
 
     name: str
@@ -148,43 +149,53 @@ class CommandTaken:
     owner: str
 
 
+@dataclass(frozen=True, slots=True)
+class HelpFlag:
+    """帮助菜单的单只开关"""
+
+    name: str
+    desc: str
+    default: FlagValue | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class HelpCommand:
+    """帮助菜单的单条命令"""
+
+    cmd: str
+    desc: str
+    flags: tuple[HelpFlag, ...] = ()
+    args: str = ""
+    role: CommandRole = CommandRole.MEMBER
+
+
+@dataclass(frozen=True, slots=True)
+class HelpSection:
+    """帮助菜单的贡献分段"""
+
+    section: str = ""
+    note: str = ""
+    commands: tuple[HelpCommand, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class PluginDeclaration:
+    """插件标题、说明、资源与帮助声明"""
+
+    title: str
+    summary: str
+    assets: tuple[str, ...] = ()
+    help: tuple[HelpSection, ...] = ()
+
+
 class PluginFileName(StrEnum):
-    """插件相关文件名"""
+    """插件声明文件名"""
 
-    MANIFEST = "plugin.toml"  # 位于各插件目录，存插件自描述清单
-
-
-class PluginManifestKeys(StrEnum):
-    """插件记录的字段名
-
-    - name、title、summary、assets、help 写在插件目录的清单文件里
-    - deps 取插件自家声明的依赖表，清单里不再写这一项
-    """
-
-    NAME = "name"
-    TITLE = "title"
-    SUMMARY = "summary"
-    DEPS = "deps"
-    ASSETS = "assets"
-    HELP = "help"
+    DECLARATION = "_declaration.py"
 
 
-class HelpKeys(StrEnum):
-    """帮助贡献键名
-
-    - 段级与命令级共用
-    - 顶层那张表的键名也在这只表里，插件读自家清单时用同一份
-    """
-
-    HELP = "help"
-    SECTION = "section"
-    NOTE = "note"
-    COMMANDS = "commands"
-    CMD = "cmd"
-    DESC = "desc"
-    FLAGS = "flags"
-    ARGS = "args"
-    ROLE = "role"
+# 外部插件的发行件名前缀，后缀须与插件目录名完全一致
+PLUGIN_NAME_PREFIX = "finshin-plugin-"
 
 
 class PluginMark(StrEnum):
@@ -195,21 +206,3 @@ class PluginMark(StrEnum):
 
     COMMAND_NAME = "command_name"
     COMMAND_ROLE = "command_role"
-
-
-@dataclass(frozen=True, slots=True)
-class _ManifestFieldSpec:
-    """插件清单标量字段规格"""
-
-    key: PluginManifestKeys
-    value_type: type
-    default: Any
-    required: bool = False
-
-
-PLUGIN_MANIFEST_TABLE: tuple[_ManifestFieldSpec, ...] = (
-    _ManifestFieldSpec(PluginManifestKeys.NAME, str, "", required=True),
-    _ManifestFieldSpec(PluginManifestKeys.TITLE, str, "", required=True),
-    _ManifestFieldSpec(PluginManifestKeys.SUMMARY, str, "", required=True),
-    _ManifestFieldSpec(PluginManifestKeys.ASSETS, list, ()),
-)

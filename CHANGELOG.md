@@ -8,11 +8,12 @@
 
 ### ⚠️ Breaking Changes
 
+- **插件声明改由代码交出**：`plugin.toml` 撤销，标题、说明、资源与帮助改由插件目录的 `_declaration.py` 交出，`PluginFileName.MANIFEST`、`ManifestKey`、`HelpKey`、`MANIFEST_FIELDS`、`HelpFlagDTO`、`HelpCommandDTO`、`HelpSectionDTO` 删除，`ADAPTER_DECLARATION_FILE` 改名 `PROJECT_MANIFEST_FILE`。
 - **平台枚举撤出接口包**：`Platform` 删除，适配器与插件改自交 `PlatformCode` 与 `SourceCode`，实例身份码改用 `ProfileKey`，`make_profile_code` / `platform_of_profile` 换成 `make_profile_key` / `platform_of_key`。
 - **配置身份统一点分串**：`ConfigPath` 的串出口只留 `dotted`（来源、段、键三段，返回 `ConfigPathKey`），删 `__str__`、`KEY_SEP` 与 `FieldKey`，`PrincipalDTO`、`MessageRefDTO`、`SessionDTO`、`TaskDTO` 的联合键属性统一叫 `dotted`，`TaskRequestDTO` 补同名出口，`TaskId`、`ContainerKey` 改名 `TaskKey`、`ContainerCode`，`MsgReferenceDTO` 改名 `MessageRefDTO`。
 - **配置键与段词表整族撤出接口包**：`ConfigKey`、`ConfigSection`、`SECTIONS_BY_PLATFORM` 与 `ProxyMode` 删除，段名与键名改由本体与插件自持，`ConfigSnapshot` 改名 `ConfigValues`。
-- **随包名单、档位表与状态键撤出接口包**：`BUNDLED_PLUGIN_PRIORITY`、`is_enabled`、`resolve_claims`、`StateKey` 删除，随包名单、加载档位、在场判定、命令名抢占与实例状态键归本体，`CommandPriority` 改名 `PluginPriority`，`ManifestKey`、`HelpKey`、`AdapterManifestKey` 改名 `PluginManifestKeys`、`HelpKeys`、`AdapterManifestKeys`，`MANIFEST_FIELDS`、`ADAPTER_MANIFEST_FIELDS` 改名 `PLUGIN_MANIFEST_TABLE`、`ADAPTER_MANIFEST_TABLE`，`ArgsValue` 改名 `FlagValue`，`AdapterFieldSpec` 与 `ManifestFieldSpec` 撤出公开名。
-- **装载与插件目录常量撤出**：`ADAPTERS_PKG`、`PLUGINS_PKG`、`INSTALLED_PLUGINS_NAME`、`INSTALLED_PLUGINS_PKG`、`PluginFileName.STATE` 删除，随包插件树名、外部插件挂载点与适配器装载根归本体，`ADAPTER_DECLARATION_FILE` 改名 `ADAPTER_MANIFEST_FILE`。
+- **随包名单、档位表与状态键撤出接口包**：`BUNDLED_PLUGIN_PRIORITY`、`is_enabled`、`resolve_claims`、`StateKey` 删除，随包名单、加载档位、在场判定、命令名抢占与实例状态键归本体，`CommandPriority` 改名 `PluginPriority`，`AdapterManifestKey` 改名 `AdapterManifestKeys`，`ADAPTER_MANIFEST_FIELDS` 改名 `ADAPTER_MANIFEST_TABLE`，`ArgsValue` 改名 `FlagValue`，`AdapterFieldSpec` 与 `ManifestFieldSpec` 撤出公开名。
+- **装载与插件目录常量撤出**：`ADAPTERS_PKG`、`PLUGINS_PKG`、`INSTALLED_PLUGINS_NAME`、`INSTALLED_PLUGINS_PKG`、`PluginFileName.STATE` 删除，随包插件树名、外部插件挂载点与适配器装载根归本体。
 - **适配器入口件六件**：新增 `sections`、`plan_for` 与 `credential`，`plan_for` 改关键字可调用的私有形状，`credential` 新增 `item`，旧的单通道探测交口撤销，进度行状态收成 `RowStatus`。
 - **会话快照撤掉摘要字段**：`SessionDTO` 与 `SessionPatchDTO` 不再带 `summary`，读写会话的件按新形状构造。
 - **异常族收窄**：`TelegramServerError` 改名 `ServerUnreachableError`，`DirectTimeoutError`、`TokenError`、`TokenFormatError` 与代理异常族搬回平台适配器。

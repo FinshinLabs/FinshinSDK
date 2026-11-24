@@ -1,6 +1,6 @@
 """接口包门面
 
-- 代发插件侧的入口基类与它要交的五份清单
+- 代发插件侧的入口基类与声明结构
 - 代发处理上下文与平台交代的那一份能力
 - 代发适配器要实现的基类与交互端口
 - 代发日志与断链上报两只公开件，实现由本体绑定
@@ -20,10 +20,14 @@ from .domain import (
     BasePlugin,
     ConfigValues,
     ConnectionPlan,
+    HelpCommand,
+    HelpFlag,
+    HelpSection,
     MessageRoute,
     MomentSubscription,
     PlanVerdict,
     PlatformMoment,
+    PluginDeclaration,
     ProbeChannel,
     ProbeOutcome,
     ProbeResult,
@@ -33,11 +37,19 @@ from .domain import (
     SourceDeclaration,
 )
 
+# 项目声明文件名，本体、适配器与插件各带一份同格式的它
+PROJECT_MANIFEST_FILE = "pyproject.toml"
+
+# 接口包自己的发行件名，插件与适配器在依赖里写它
+SDK_DISTRIBUTION = "finshin-sdk"
+
 # 接口包自身的版本号，装载前比对适配器清单的接口要求时取它
-SDK_VERSION = version("finshin-sdk")
+SDK_VERSION = version(SDK_DISTRIBUTION)
 
 __all__ = [
     # 接口版本
+    "PROJECT_MANIFEST_FILE",
+    "SDK_DISTRIBUTION",
     "SDK_VERSION",
     # 插件契约
     "BasePlugin",
@@ -46,6 +58,10 @@ __all__ = [
     "QueuedAction",
     "PlatformMoment",
     "MomentSubscription",
+    "HelpFlag",
+    "HelpCommand",
+    "HelpSection",
+    "PluginDeclaration",
     "SourceDeclaration",
     "HandlerContext",
     "CapabilityCall",
