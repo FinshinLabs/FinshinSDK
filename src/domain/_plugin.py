@@ -150,8 +150,12 @@ class CommandTaken:
 
 
 @dataclass(frozen=True, slots=True)
-class HelpFlag:
-    """帮助菜单的单只开关"""
+class FlagHelp:
+    """命令的一只开关声明
+
+    - default 为空即纯开关
+    - default 非空即带值开关，值按默认值的类型收，只认 FlagValue
+    """
 
     name: str
     desc: str
@@ -159,23 +163,26 @@ class HelpFlag:
 
 
 @dataclass(frozen=True, slots=True)
-class HelpCommand:
-    """帮助菜单的单条命令"""
+class CommandHelp:
+    """插件交出的一条命令声明"""
 
     cmd: str
     desc: str
-    flags: tuple[HelpFlag, ...] = ()
+    flags: tuple[FlagHelp, ...] = ()
     args: str = ""
     role: CommandRole = CommandRole.MEMBER
 
 
 @dataclass(frozen=True, slots=True)
-class HelpSection:
-    """帮助菜单的贡献分段"""
+class SectionHelp:
+    """插件交到帮助菜单的一段
+
+    - 段名是分组抬头，命令按段分组，段内顺序原样
+    """
 
     section: str = ""
     note: str = ""
-    commands: tuple[HelpCommand, ...] = ()
+    commands: tuple[CommandHelp, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -185,7 +192,7 @@ class PluginDeclaration:
     title: str
     summary: str
     assets: tuple[str, ...] = ()
-    help: tuple[HelpSection, ...] = ()
+    help: tuple[SectionHelp, ...] = ()
 
 
 class PluginFileName(StrEnum):

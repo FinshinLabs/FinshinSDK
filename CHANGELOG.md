@@ -8,7 +8,8 @@
 
 ### ⚠️ Breaking Changes
 
-- **插件声明改由代码交出**：`plugin.toml` 撤销，标题、说明、资源与帮助改由插件目录的 `_declaration.py` 交出，`PluginFileName.MANIFEST`、`ManifestKey`、`HelpKey`、`MANIFEST_FIELDS`、`HelpFlagDTO`、`HelpCommandDTO`、`HelpSectionDTO` 删除，`ADAPTER_DECLARATION_FILE` 改名 `PROJECT_MANIFEST_FILE`。
+- **插件声明改由代码交出**：`plugin.toml` 撤销，插件名与依赖取项目声明的 `pyproject.toml`，标题、说明、资源与帮助改由插件目录的 `_declaration.py` 交出，`PluginFileName.MANIFEST`、`ManifestKey`、`HelpKey`、`MANIFEST_FIELDS`、`HelpFlagDTO`、`HelpCommandDTO`、`HelpSectionDTO` 删除，`ADAPTER_DECLARATION_FILE` 改名 `PROJECT_MANIFEST_FILE`。
+- **根门面只管接口包自身的件**：`BasePlugin`、`MessageRoute`、`BackgroundLoop`、`QueuedAction`、`PlatformMoment`、`MomentSubscription` 与 `SourceDeclaration` 不再由 `finshin_sdk` 根代发，改从 `finshin_sdk.domain` 取，`domain` 与 `dto` 的公开形状一律直接取子包。
 - **平台枚举撤出接口包**：`Platform` 删除，适配器与插件改自交 `PlatformCode` 与 `SourceCode`，实例身份码改用 `ProfileKey`，`make_profile_code` / `platform_of_profile` 换成 `make_profile_key` / `platform_of_key`。
 - **配置身份统一点分串**：`ConfigPath` 的串出口只留 `dotted`（来源、段、键三段，返回 `ConfigPathKey`），删 `__str__`、`KEY_SEP` 与 `FieldKey`，`PrincipalDTO`、`MessageRefDTO`、`SessionDTO`、`TaskDTO` 的联合键属性统一叫 `dotted`，`TaskRequestDTO` 补同名出口，`TaskId`、`ContainerKey` 改名 `TaskKey`、`ContainerCode`，`MsgReferenceDTO` 改名 `MessageRefDTO`。
 - **配置键与段词表整族撤出接口包**：`ConfigKey`、`ConfigSection`、`SECTIONS_BY_PLATFORM` 与 `ProxyMode` 删除，段名与键名改由本体与插件自持，`ConfigSnapshot` 改名 `ConfigValues`。
@@ -21,6 +22,7 @@
 
 ### ✨ Added
 
+- **插件声明形状**：新增 `PluginDeclaration`、`SectionHelp`、`CommandHelp` 与 `FlagHelp`，插件在 `_declaration.py` 里交出标题、说明、资源与帮助菜单。
 - **插件运行期异常基类**：新增 `PluginError`，外部插件的运行期错误统一挂它下面。
 - **配置来源可交保存轮检查计划**：`SourceDeclaration` 新增可选 `probe` 与 `probe_label`，`probe` 吃 `ConfigValues` 回一份 `ConnectionPlan`，保存配置时随平台那轮并进进度表。
 - **连通检查计划**：`ConnectionPlan`、`ProbeChannel`、`ProbeRow`、`ProbeResult`、`ProbeOutcome` 与 `PlanVerdict` 一起交出，进度行、每路预算、收尾裁决与提示话术都由适配器决定，`PlanVerdict` 新增 `fatal` 旗。

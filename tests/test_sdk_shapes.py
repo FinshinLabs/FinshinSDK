@@ -6,21 +6,19 @@
 - 覆盖插件声明与帮助形状
 """
 
-from finshin_sdk import (
-    HelpCommand,
-    HelpFlag,
-    HelpSection,
-    PluginDeclaration,
-)
 from finshin_sdk.domain import (
+    CommandHelp,
     ConfigPath,
     ContainerCode,
+    FlagHelp,
     MessageId,
     PlatformCode,
+    PluginDeclaration,
     PluginFileName,
     ProbeRow,
     ProfileKey,
     RowStatus,
+    SectionHelp,
     SourceCode,
     TaskStatus,
     UserId,
@@ -130,12 +128,12 @@ def test_plugin_declaration_defaults_to_empty_tuples() -> None:
 
 def test_plugin_declaration_composes_assets_and_help() -> None:
     """插件声明可交资源、帮助开关、命令与分段"""
-    command = HelpCommand(
+    command = CommandHelp(
         cmd="/demo",
         desc="示例命令",
-        flags=(HelpFlag(name="-n", desc="次数"),),
+        flags=(FlagHelp(name="-n", desc="次数"),),
     )
-    section = HelpSection(section="示例", commands=(command,))
+    section = SectionHelp(section="示例", commands=(command,))
     declaration = PluginDeclaration(
         title="示例",
         summary="说明",

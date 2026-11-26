@@ -36,10 +36,9 @@ from ._plugin import (
     ActionRun,
     BackgroundLoop,
     BasePlugin,
+    CommandHelp,
     CommandTaken,
-    HelpCommand,
-    HelpFlag,
-    HelpSection,
+    FlagHelp,
     MessageRoute,
     MomentRun,
     MomentSubscription,
@@ -52,6 +51,7 @@ from ._plugin import (
     QueuedAction,
     RouteMatcher,
     RouteSink,
+    SectionHelp,
 )
 from ._role import ChatRole, CommandRole
 from ._task import TaskPayload, TaskStatus, is_own_action
@@ -114,9 +114,9 @@ __all__ = [
     "PluginClaim",
     "PluginFileName",
     "PluginMark",
-    "HelpFlag",
-    "HelpCommand",
-    "HelpSection",
+    "FlagHelp",
+    "CommandHelp",
+    "SectionHelp",
     "PluginDeclaration",
     "PLUGIN_NAME_PREFIX",
     "RouteSink",
