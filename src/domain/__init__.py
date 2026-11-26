@@ -24,6 +24,16 @@ from ._command import (
 from ._container import make_container
 from ._content import ContentKind
 from ._fields import FieldKey
+from ._plan import (
+    ConfigSnapshot,
+    ConnectionPlan,
+    PlanFactory,
+    PlanVerdict,
+    ProbeChannel,
+    ProbeOutcome,
+    ProbeResult,
+    ProbeRow,
+)
 from ._platform import ChatScope, Platform, make_profile_code, platform_of_profile
 from ._plugin import (
     BUNDLED_PLUGIN_PRIORITY,
@@ -56,13 +66,12 @@ from ._plugin import (
 from ._role import ChatRole, CommandRole
 from ._task import TaskPayload, TaskStatus, is_own_action
 from .config import (
-    SECTIONS_BY_PLATFORM,
     ConfigKey,
     ConfigPath,
     ConfigSection,
     ConfigValue,
+    FieldCondition,
     FieldSpec,
-    ProxyMode,
     SectionSpec,
     SourceDeclaration,
 )
@@ -134,9 +143,17 @@ __all__ = [
     "ConfigPath",
     "ConfigSection",
     "ConfigKey",
-    "ProxyMode",
+    "FieldCondition",
     "FieldSpec",
     "SectionSpec",
     "SourceDeclaration",
-    "SECTIONS_BY_PLATFORM",
+    # 连通检查计划
+    "ConfigSnapshot",
+    "ConnectionPlan",
+    "PlanFactory",
+    "PlanVerdict",
+    "ProbeChannel",
+    "ProbeOutcome",
+    "ProbeResult",
+    "ProbeRow",
 ]

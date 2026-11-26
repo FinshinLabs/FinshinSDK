@@ -30,7 +30,6 @@ class SessionDTO:
     platform: Platform
     container: ContainerKey
     messages: tuple[MessageDTO, ...] = ()
-    summary: str = ""  # 压缩摘要，覆盖旧的
 
     @property
     def session_key(self) -> SessionKey:
@@ -45,5 +44,4 @@ class SessionPatchDTO:
     """
 
     append: tuple[MessageDTO, ...] | None = None
-    summary: str | None = None
     reset_to_system: bool = False

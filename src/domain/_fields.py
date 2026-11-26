@@ -7,9 +7,7 @@
 class FieldKey:
     """探测错误字典的键协议
 
-    - 区分 proxy 错与 token 错
-    - proxy 兼作面板标红字段键，token 不进面板仅作致命判定
+    - token 不进面板仅作致命判定
     """
 
-    PROXY = "proxy"
     TOKEN = "token"
