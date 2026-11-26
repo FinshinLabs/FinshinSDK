@@ -12,16 +12,3 @@ from ._models import (
     SectionSpec,
     SourceDeclaration,
 )
-
-__all__ = [
-    # 值类型
-    "ConfigValue",
-    # 配置项身份
-    "ConfigPath",
-    "ConfigPathKey",
-    # 结构体
-    "FieldCondition",
-    "FieldSpec",
-    "SectionSpec",
-    "SourceDeclaration",
-]

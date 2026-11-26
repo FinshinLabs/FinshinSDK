@@ -10,14 +10,13 @@ from typing import Protocol
 from ._adapter import BaseAdapter
 from .domain import (
     BackgroundLoop,
-    ConfigPath,
     ConfigValues,
     ConnectionPlan,
     MomentRun,
     PlatformMoment,
     QueuedAction,
-    SectionSpec,
 )
+from .domain.config import ConfigPath, SectionSpec
 from .dto import PluginManifestDTO
 
 

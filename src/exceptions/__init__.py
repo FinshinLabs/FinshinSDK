@@ -13,17 +13,3 @@ from ._contracts import (
     ProbeTimeoutError,
     ServerUnreachableError,
 )
-
-__all__ = [
-    # 基类
-    "BotError",
-    "PluginError",
-    # 领域
-    "DomainError",
-    "MessageVanishedError",
-    # 连接性
-    "ConnectivityError",
-    "ServerUnreachableError",
-    "ProbeTimeoutError",
-    "ProbeCrashedError",
-]

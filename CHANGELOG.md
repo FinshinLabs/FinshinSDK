@@ -9,7 +9,8 @@
 ### ⚠️ Breaking Changes
 
 - **插件声明改由代码交出**：`plugin.toml` 撤销，插件名与依赖取项目声明的 `pyproject.toml`，标题、说明、资源与帮助改由插件目录的 `_declaration.py` 交出，`PluginFileName.MANIFEST`、`ManifestKey`、`HelpKey`、`MANIFEST_FIELDS`、`HelpFlagDTO`、`HelpCommandDTO`、`HelpSectionDTO` 删除，`ADAPTER_DECLARATION_FILE` 改名 `PROJECT_MANIFEST_FILE`。
-- **根门面只管接口包自身的件**：`BasePlugin`、`MessageRoute`、`BackgroundLoop`、`QueuedAction`、`PlatformMoment`、`MomentSubscription` 与 `SourceDeclaration` 不再由 `finshin_sdk` 根代发，改从 `finshin_sdk.domain` 取，`domain` 与 `dto` 的公开形状一律直接取子包。
+- **根门面只管接口包自身的件**：`BasePlugin`、`MessageRoute`、`BackgroundLoop`、`QueuedAction`、`PlatformMoment` 与 `MomentSubscription` 不再由 `finshin_sdk` 根代发，改从 `finshin_sdk.domain` 取。
+- **domain 门面撤掉配置与标识代发**：`ConfigPath`、`ConfigPathKey`、`ConfigValue`、`FieldCondition`、`FieldSpec`、`SectionSpec`、`SourceDeclaration`、`ChatId`、`ContainerCode`、`MessageId`、`PlatformCode`、`PrincipalKey`、`ProfileKey`、`SessionKey`、`SourceCode`、`TaskKey` 与 `UserId` 不再从 `finshin_sdk.domain` 取，配置结构改从 `finshin_sdk.domain.config` 取，标识类型改从 `finshin_sdk.domain.ids` 取。
 - **平台枚举撤出接口包**：`Platform` 删除，适配器与插件改自交 `PlatformCode` 与 `SourceCode`，实例身份码改用 `ProfileKey`，`make_profile_code` / `platform_of_profile` 换成 `make_profile_key` / `platform_of_key`。
 - **配置身份统一点分串**：`ConfigPath` 的串出口只留 `dotted`（来源、段、键三段，返回 `ConfigPathKey`），删 `__str__`、`KEY_SEP` 与 `FieldKey`，`PrincipalDTO`、`MessageRefDTO`、`SessionDTO`、`TaskDTO` 的联合键属性统一叫 `dotted`，`TaskRequestDTO` 补同名出口，`TaskId`、`ContainerKey` 改名 `TaskKey`、`ContainerCode`，`MsgReferenceDTO` 改名 `MessageRefDTO`。
 - **配置键与段词表整族撤出接口包**：`ConfigKey`、`ConfigSection`、`SECTIONS_BY_PLATFORM` 与 `ProxyMode` 删除，段名与键名改由本体与插件自持，`ConfigSnapshot` 改名 `ConfigValues`。
@@ -19,6 +20,7 @@
 - **会话快照撤掉摘要字段**：`SessionDTO` 与 `SessionPatchDTO` 不再带 `summary`，读写会话的件按新形状构造。
 - **异常族收窄**：`TelegramServerError` 改名 `ServerUnreachableError`，`DirectTimeoutError`、`TokenError`、`TokenFormatError` 与代理异常族搬回平台适配器。
 - **平台专属名回适配器**：`MediaGroupId` 从接口包移到 Telegram 适配器，`MessageKey` 暂不对外。
+- **门面不再声明 `__all__`**：`finshin_sdk` 根门面、`domain`、`domain.config`、`dto` 与 `exceptions` 的 `__all__` 删除，导入即出口，`import *` 取到的是模块内全部公开名。
 
 ### ✨ Added
 

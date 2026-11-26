@@ -6,7 +6,7 @@
 
 from dataclasses import dataclass
 
-from ..domain import PlatformCode
+from ..domain.ids import PlatformCode
 
 
 @dataclass(frozen=True, slots=True)

@@ -7,7 +7,8 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable, Sequence
 from typing import Any
 
-from .domain import MessageRoute, PlatformCode, RouteSink
+from .domain import MessageRoute, RouteSink
+from .domain.ids import PlatformCode
 from .dto import MessageRefDTO, OutboundPayloadDTO, PrincipalDTO
 
 # 清单编译器：把插件交出的路由清单编译成本平台的路由对象
