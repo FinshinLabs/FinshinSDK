@@ -30,6 +30,10 @@
 - **连通检查计划**：`ConnectionPlan`、`ProbeChannel`、`ProbeRow`、`ProbeResult`、`ProbeOutcome` 与 `PlanVerdict` 一起交出，进度行、每路预算、收尾裁决与提示话术都由适配器决定，`PlanVerdict` 新增 `fatal` 旗。
 - **字段显隐与归属标记**：`FieldCondition`、`FieldSpec.visible_when` 与 `FieldSpec.tags`，按同段另一个字段的取值决定一行显不显示，并给字段挂归属标记。
 
+### 🔧 Changed
+
+- **门面代发名标成显式再导出**：根门面、`domain`、`domain.config`、`dto` 与 `exceptions` 的代发名都带显式再导出，pyright 等类型检查器从门面取名字不再报未导出，新增公开名要照同样写法补齐，否则检查会红。
+
 ## [0.2.0] - 2026-11-19
 
 ### ⚠️ Breaking Changes

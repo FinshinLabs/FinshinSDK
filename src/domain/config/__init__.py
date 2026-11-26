@@ -4,11 +4,11 @@
 """
 
 from ._models import (
-    ConfigPath,
-    ConfigPathKey,
-    ConfigValue,
-    FieldCondition,
-    FieldSpec,
-    SectionSpec,
-    SourceDeclaration,
+    ConfigPath as ConfigPath,
+    ConfigPathKey as ConfigPathKey,
+    ConfigValue as ConfigValue,
+    FieldCondition as FieldCondition,
+    FieldSpec as FieldSpec,
+    SectionSpec as SectionSpec,
+    SourceDeclaration as SourceDeclaration,
 )

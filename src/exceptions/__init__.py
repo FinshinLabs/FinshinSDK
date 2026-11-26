@@ -4,12 +4,12 @@
 """
 
 from ._contracts import (
-    BotError,
-    ConnectivityError,
-    DomainError,
-    MessageVanishedError,
-    PluginError,
-    ProbeCrashedError,
-    ProbeTimeoutError,
-    ServerUnreachableError,
+    BotError as BotError,
+    ConnectivityError as ConnectivityError,
+    DomainError as DomainError,
+    MessageVanishedError as MessageVanishedError,
+    PluginError as PluginError,
+    ProbeCrashedError as ProbeCrashedError,
+    ProbeTimeoutError as ProbeTimeoutError,
+    ServerUnreachableError as ServerUnreachableError,
 )
