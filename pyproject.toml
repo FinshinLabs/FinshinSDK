@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "finshin-sdk"
-version = "0.2.0"
+version = "0.3.0"
 description = "本体与适配器、插件共用的接口包"
 requires-python = ">=3.11,<4.0"
 

@@ -6,6 +6,8 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-26
+
 ### ⚠️ Breaking Changes
 
 - **插件声明改由代码交出**：`plugin.toml` 撤销，插件名与依赖取项目声明的 `pyproject.toml`，标题、说明、资源与帮助改由插件目录的 `_declaration.py` 交出，`PluginFileName.MANIFEST`、`ManifestKey`、`HelpKey`、`MANIFEST_FIELDS`、`HelpFlagDTO`、`HelpCommandDTO`、`HelpSectionDTO` 删除，`ADAPTER_DECLARATION_FILE` 改名 `PROJECT_MANIFEST_FILE`。
