@@ -4,19 +4,15 @@
 - 插件清单标量字段的类型、必填与默认
 - 路由清单、常驻协程、任务处理、时机订阅与来源声明的签名
 - 平台侧的路由挂载口
-- 插件之间抢命令名的判定
+- 命令名抢占判定的记录与结果形状
 """
 
-from collections.abc import Awaitable, Callable, Coroutine, Sequence
+from collections.abc import Awaitable, Callable, Coroutine
 from dataclasses import dataclass
 from enum import IntEnum, StrEnum, auto
 from typing import Any, Protocol
 
 from .config import SourceDeclaration
-
-PLUGINS_PKG = "bundled"  # 随包插件树顶层包名，包存在性扫描与动态导入路径共用同值
-INSTALLED_PLUGINS_NAME = "finshin/plugin"  # 外部插件挂载点
-INSTALLED_PLUGINS_PKG = "plugin"  # 外部插件的顶层包名，导入前缀与挂载共用同值
 
 # 插件声明的无参常驻协程，随 Bot 服务起停
 BackgroundLoop = Callable[[], Coroutine[Any, Any, None]]
@@ -122,7 +118,7 @@ class RouteSink(Protocol):
         """挂上一份路由"""
 
 
-class CommandPriority(IntEnum):
+class PluginPriority(IntEnum):
     """插件加载优先级
 
     - 数值越小越优先，同值按名字典序
@@ -131,23 +127,6 @@ class CommandPriority(IntEnum):
     FIRST = 0  # 最先档
     NORMAL = 10  # 常规档，表外插件一律这档
     LAST = 50  # 最后档
-
-
-# 随包插件的恒启用与加载档位，表外插件一律常规档
-BUNDLED_PLUGIN_PRIORITY: dict[str, CommandPriority] = {
-    "help": CommandPriority.FIRST,
-    "grant": CommandPriority.NORMAL,
-    "AI": CommandPriority.LAST,
-}
-
-
-def is_enabled(name: str, enabled: frozenset[str] | None) -> bool:
-    """判定插件本次在场
-
-    - 随包表里的插件恒在场
-    - 启用集为 None 表示实例从未保存过选择，表外插件一律不在场
-    """
-    return name in BUNDLED_PLUGIN_PRIORITY or (enabled is not None and name in enabled)
 
 
 @dataclass(frozen=True, slots=True)
@@ -169,63 +148,13 @@ class CommandTaken:
     owner: str
 
 
-def resolve_claims(
-    claims: Sequence[PluginClaim],
-    enabled: frozenset[str] | None,
-) -> tuple[frozenset[str], dict[str, tuple[CommandTaken, ...]]]:
-    """解开插件之间的命令名抢占
-
-    - 回 (放行的插件名, 按插件名交出被抢走的命令名)，装载与面板共用这一份
-    - 只有在场的插件拿走命令名，在场即随包表内或落在启用集
-    - 一个命令名只有一只在场时它拿走，多只在场时随包件拿走
-    - 同一命令名多只表外插件同时在场即整组作废，本次一起禁用且不记冲突
-    - 不在场但命令名被拿走的照记冲突，面板据此禁掉勾选
-    - 随包表里的插件恒放行也不记冲突，表内互抢归本体安排
-    - 插件任一命令名被抢走即整只不放行，路由由插件整体交出，摘不掉单独一条
-    """
-    holders: dict[str, list[str]] = {}
-    for claim in claims:
-        if not is_enabled(claim.name, enabled):
-            continue
-        for cmd in claim.commands:
-            holders.setdefault(cmd, []).append(claim.name)
-
-    owners: dict[str, str] = {}
-    voided: set[str] = set()
-    for cmd, names in holders.items():
-        bundled = [name for name in names if name in BUNDLED_PLUGIN_PRIORITY]
-        if len(names) == 1 or bundled:
-            owners[cmd] = bundled[0] if bundled else names[0]
-            continue
-        voided.update(names)
-
-    allowed: set[str] = set()
-    conflicts: dict[str, tuple[CommandTaken, ...]] = {}
-    for claim in claims:
-        if claim.name in BUNDLED_PLUGIN_PRIORITY:
-            allowed.add(claim.name)
-            continue
-        taken = tuple(
-            CommandTaken(cmd, owners[cmd])
-            for cmd in claim.commands
-            if owners.get(cmd, claim.name) != claim.name
-        )
-        if taken:
-            conflicts[claim.name] = taken
-        elif is_enabled(claim.name, enabled) and claim.name not in voided:
-            allowed.add(claim.name)
-
-    return frozenset(allowed), conflicts
-
-
 class PluginFileName(StrEnum):
     """插件相关文件名"""
 
     MANIFEST = "plugin.toml"  # 位于各插件目录，存插件自描述清单
-    STATE = "plugins.toml"  # 位于实例目录，存启用集与 catalog 指纹
 
 
-class ManifestKey(StrEnum):
+class PluginManifestKeys(StrEnum):
     """插件记录的字段名
 
     - name、title、summary、assets、help 写在插件目录的清单文件里
@@ -240,7 +169,7 @@ class ManifestKey(StrEnum):
     HELP = "help"
 
 
-class HelpKey(StrEnum):
+class HelpKeys(StrEnum):
     """帮助贡献键名
 
     - 段级与命令级共用
@@ -268,29 +197,19 @@ class PluginMark(StrEnum):
     COMMAND_ROLE = "command_role"
 
 
-class StateKey(StrEnum):
-    """实例状态文件键名
-
-    - 面板写侧与运行期读侧共用
-    """
-
-    ENABLED = "enabled"
-    CATALOG = "catalog"
-
-
 @dataclass(frozen=True, slots=True)
-class ManifestFieldSpec:
+class _ManifestFieldSpec:
     """插件清单标量字段规格"""
 
-    key: ManifestKey
+    key: PluginManifestKeys
     value_type: type
     default: Any
     required: bool = False
 
 
-MANIFEST_FIELDS: tuple[ManifestFieldSpec, ...] = (
-    ManifestFieldSpec(ManifestKey.NAME, str, "", required=True),
-    ManifestFieldSpec(ManifestKey.TITLE, str, "", required=True),
-    ManifestFieldSpec(ManifestKey.SUMMARY, str, "", required=True),
-    ManifestFieldSpec(ManifestKey.ASSETS, list, ()),
+PLUGIN_MANIFEST_TABLE: tuple[_ManifestFieldSpec, ...] = (
+    _ManifestFieldSpec(PluginManifestKeys.NAME, str, "", required=True),
+    _ManifestFieldSpec(PluginManifestKeys.TITLE, str, "", required=True),
+    _ManifestFieldSpec(PluginManifestKeys.SUMMARY, str, "", required=True),
+    _ManifestFieldSpec(PluginManifestKeys.ASSETS, list, ()),
 )

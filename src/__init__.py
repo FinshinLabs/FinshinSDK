@@ -10,12 +10,7 @@
 from importlib.metadata import version
 
 from ._adapter import BaseAdapter, InteractionPort, RouterBuilder
-from ._assembly import (
-    AdapterParts,
-    CredentialSpec,
-    PlanFactory,
-    PlatformAssembly,
-)
+from ._assembly import AdapterParts, CredentialSpec, PlatformAssembly
 from ._capability import CapabilityCall
 from ._context import HandlerContext
 from ._link import bind_link_report, link_down, link_up
@@ -23,7 +18,7 @@ from ._log import LogLevel, bind_logger, log
 from .domain import (
     BackgroundLoop,
     BasePlugin,
-    ConfigSnapshot,
+    ConfigValues,
     ConnectionPlan,
     MessageRoute,
     MomentSubscription,
@@ -34,6 +29,7 @@ from .domain import (
     ProbeResult,
     ProbeRow,
     QueuedAction,
+    RowStatus,
     SourceDeclaration,
 )
 
@@ -61,14 +57,14 @@ __all__ = [
     "PlatformAssembly",
     "AdapterParts",
     "CredentialSpec",
-    "ConfigSnapshot",
+    "ConfigValues",
     "ConnectionPlan",
-    "PlanFactory",
     "PlanVerdict",
     "ProbeChannel",
     "ProbeOutcome",
     "ProbeResult",
     "ProbeRow",
+    "RowStatus",
     # 日志与断链上报
     "log",
     "LogLevel",

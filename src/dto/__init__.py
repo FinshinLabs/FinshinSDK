@@ -5,7 +5,7 @@
 
 from ._adapter import AdapterManifestDTO
 from ._content import ContentDTO, MediaEntryDTO
-from ._identity import MsgReferenceDTO, PrincipalDTO
+from ._identity import MessageRefDTO, PrincipalDTO
 from ._interaction import CommandDTO, InboundEventDTO, OutboundPayloadDTO
 from ._plugin import HelpCommandDTO, HelpFlagDTO, HelpSectionDTO, PluginManifestDTO
 from ._session import MessageDTO, SessionDTO, SessionPatchDTO
@@ -14,7 +14,7 @@ from ._task import TaskDTO, TaskPatchDTO, TaskRequestDTO
 __all__ = [
     # 身份
     "PrincipalDTO",
-    "MsgReferenceDTO",
+    "MessageRefDTO",
     # 内容
     "ContentDTO",
     "MediaEntryDTO",

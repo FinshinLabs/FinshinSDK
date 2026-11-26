@@ -6,7 +6,7 @@
 
 from dataclasses import dataclass
 
-from ..domain import ArgsValue, CommandRole
+from ..domain import CommandRole, FlagValue
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,7 +20,7 @@ class HelpFlagDTO:
 
     name: str
     desc: str
-    default: ArgsValue | None = None
+    default: FlagValue | None = None
 
 
 @dataclass(frozen=True, slots=True)

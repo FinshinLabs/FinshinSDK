@@ -6,8 +6,8 @@
 from dataclasses import dataclass
 
 from ..domain import TaskPayload, TaskStatus
-from ..domain.ids import KEY_SEP, TaskId
-from ._identity import MsgReferenceDTO, PrincipalDTO
+from ..domain.ids import TaskKey
+from ._identity import MessageRefDTO, PrincipalDTO
 
 
 @dataclass(frozen=True, slots=True)
@@ -17,13 +17,14 @@ class TaskDTO:
     principal: PrincipalDTO
     kind: str
     status: TaskStatus
-    source_ref: MsgReferenceDTO  # 任务创建源消息
+    source_ref: MessageRefDTO  # 任务创建源消息
 
     payload: TaskPayload = ()
 
     @property
-    def task_id(self) -> TaskId:
-        return TaskId(f"{self.principal.key}{KEY_SEP}{self.kind}")
+    def dotted(self) -> TaskKey:
+        """交任务身份串"""
+        return TaskKey(f"{self.principal.dotted}.{self.kind}")
 
 
 @dataclass(frozen=True, slots=True)
@@ -32,9 +33,14 @@ class TaskRequestDTO:
 
     principal: PrincipalDTO
     kind: str
-    source_ref: MsgReferenceDTO
+    source_ref: MessageRefDTO
 
     payload: TaskPayload = ()
+
+    @property
+    def dotted(self) -> TaskKey:
+        """交任务身份串"""
+        return TaskKey(f"{self.principal.dotted}.{self.kind}")
 
 
 @dataclass(frozen=True, slots=True)

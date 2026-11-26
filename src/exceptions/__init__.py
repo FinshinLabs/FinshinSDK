@@ -6,20 +6,11 @@
 from ._contracts import (
     BotError,
     ConnectivityError,
-    DirectTimeoutError,
     DomainError,
     MessageVanishedError,
     ProbeCrashedError,
     ProbeTimeoutError,
-    ProxyAddressError,
-    ProxyConnectionRefusedError,
-    ProxyError,
-    ProxySchemeError,
-    ProxySchemeMissingError,
-    ProxyTimeoutError,
-    TelegramServerError,
-    TokenError,
-    TokenFormatError,
+    ServerUnreachableError,
 )
 
 __all__ = [
@@ -30,16 +21,7 @@ __all__ = [
     "MessageVanishedError",
     # 连接性
     "ConnectivityError",
-    "DirectTimeoutError",
-    "TokenError",
-    "TelegramServerError",
-    "ProxyError",
-    "ProxyAddressError",
-    "ProxySchemeError",
-    "ProxySchemeMissingError",
-    "ProxyTimeoutError",
-    "ProxyConnectionRefusedError",
-    "TokenFormatError",
+    "ServerUnreachableError",
     "ProbeTimeoutError",
     "ProbeCrashedError",
 ]

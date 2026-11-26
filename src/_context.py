@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 from ._adapter import InteractionPort
 from .domain import ChatScope, ContentKind
-from .dto import InboundEventDTO, MsgReferenceDTO, OutboundPayloadDTO
+from .dto import InboundEventDTO, MessageRefDTO, OutboundPayloadDTO
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,7 +20,7 @@ class HandlerContext:
     event: InboundEventDTO
     interaction: InteractionPort
 
-    async def reply(self, content: str | OutboundPayloadDTO) -> MsgReferenceDTO | None:
+    async def reply(self, content: str | OutboundPayloadDTO) -> MessageRefDTO | None:
         """回复当前事件"""
         return await self.interaction.send_message(
             self.event.principal,
@@ -28,15 +28,13 @@ class HandlerContext:
             reply_ref=self.event.ref,
         )
 
-    async def answer(self, content: str | OutboundPayloadDTO) -> MsgReferenceDTO | None:
+    async def answer(self, content: str | OutboundPayloadDTO) -> MessageRefDTO | None:
         """发到当前会话，不引用原消息"""
         return await self.interaction.send_message(
             self.event.principal, _to_payload(content)
         )
 
-    async def respond(
-        self, content: str | OutboundPayloadDTO
-    ) -> MsgReferenceDTO | None:
+    async def respond(self, content: str | OutboundPayloadDTO) -> MessageRefDTO | None:
         """按场合回话
 
         - 群里引用当前事件，其余直接发

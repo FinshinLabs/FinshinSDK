@@ -6,7 +6,6 @@
 from enum import StrEnum
 
 from ._role import ChatRole
-from .ids import KEY_SEP
 
 _ChatTurn = tuple[ChatRole, str]
 TaskPayload = tuple[_ChatTurn, ...]
@@ -18,7 +17,7 @@ def is_own_action(kind: str, plugin_name: str) -> bool:
     - 形状是「插件名.动作」，前段必须等于插件名，尾段非空
     - 尾段内容平台不解释
     """
-    head, sep, action = kind.partition(KEY_SEP)
+    head, sep, action = kind.partition(".")
     return bool(sep and action and head == plugin_name)
 
 

@@ -25,7 +25,6 @@ class ContentDTO:
 class MediaEntryDTO:
     """媒体索引条目
 
-    - 与 media_asset 表对应
     - 相册按张给 id 与附文，单条消息只有一项
     """
 

@@ -5,12 +5,15 @@
 
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
+from typing import Protocol
 
 from ._adapter import BaseAdapter
 from .domain import (
     BackgroundLoop,
+    ConfigPath,
+    ConfigValues,
+    ConnectionPlan,
     MomentRun,
-    PlanFactory,
     PlatformMoment,
     QueuedAction,
     SectionSpec,
@@ -33,6 +36,21 @@ class PlatformAssembly:
     platform_moments: dict[PlatformMoment, tuple[MomentRun, ...]]
 
 
+class _PlanFactory(Protocol):
+    """适配器计划工厂
+
+    - 收各段配置值、凭证与系统代理，回一份检查计划
+    """
+
+    def __call__(
+        self,
+        values: ConfigValues,
+        token: str,
+        *,
+        system_proxy: str | None = None,
+    ) -> ConnectionPlan: ...
+
+
 @dataclass(frozen=True, slots=True)
 class CredentialSpec:
     """本平台凭证的声明
@@ -40,12 +58,14 @@ class CredentialSpec:
     - label 是凭证输入框的名字
     - desc 是输入框下那行提示
     - invalid 是认不出凭证时给人看的一句
+    - item 是凭证那一项在配置里的身份
     - identity 收凭证串回身份码，认不出返回空串
     """
 
     label: str
     desc: str
     invalid: str
+    item: ConfigPath
     identity: Callable[[str], str]
 
 
@@ -64,6 +84,6 @@ class AdapterParts:
     title: str
     sections: tuple[SectionSpec, ...]
     assemble: Callable[[str, str | None], BaseAdapter]
-    plan_for: PlanFactory
+    plan_for: _PlanFactory
     engine_preload: Callable[[], None]
     credential: CredentialSpec

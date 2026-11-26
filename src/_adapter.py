@@ -7,8 +7,8 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable, Sequence
 from typing import Any
 
-from .domain import MessageRoute, Platform, RouteSink
-from .dto import MsgReferenceDTO, OutboundPayloadDTO, PrincipalDTO
+from .domain import MessageRoute, PlatformCode, RouteSink
+from .dto import MessageRefDTO, OutboundPayloadDTO, PrincipalDTO
 
 # 清单编译器：把插件交出的路由清单编译成本平台的路由对象
 RouterBuilder = Callable[[Sequence[MessageRoute]], Any]
@@ -27,8 +27,8 @@ class InteractionPort(ABC):
         content: OutboundPayloadDTO,
         *,
         mention: bool = False,
-        reply_ref: MsgReferenceDTO | None = None,
-    ) -> MsgReferenceDTO | None:
+        reply_ref: MessageRefDTO | None = None,
+    ) -> MessageRefDTO | None:
         """发送消息
 
         - 引用锚非空时引用该消息
@@ -36,7 +36,7 @@ class InteractionPort(ABC):
         """
 
     @abstractmethod
-    async def probe_existence(self, target: MsgReferenceDTO) -> bool:
+    async def probe_existence(self, target: MessageRefDTO) -> bool:
         """探测消息是否仍存在"""
 
     @abstractmethod
@@ -55,7 +55,7 @@ class BaseAdapter(ABC):
 
     @property
     @abstractmethod
-    def platform(self) -> Platform:
+    def platform(self) -> PlatformCode:
         """平台标识"""
 
     @property

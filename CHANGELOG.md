@@ -8,17 +8,21 @@
 
 ### ⚠️ Breaking Changes
 
-- **配置段表与代理档位撤出接口包**：`SECTIONS_BY_PLATFORM`、`ProxyMode`、`FieldKey.PROXY` 与配置里的代理段、代理模式键一并删除，平台自己的配置段改由适配器入口件交出。`ConfigPath` 的段名与键名收原串，`ConfigSection` 只剩本体自带的段。
-- **适配器入口件改交段表与检查计划**：`AdapterParts` 五件，新增 `sections` 与 `plan_for`，旧的单通道探测交口撤销。
-- **适配器入口件多交凭证声明**：`AdapterParts` 六件，新增的 `credential` 交凭证的名字、提示、非法提示与身份推导，仍按五件构造的旧形状在装载当场报错。
+- **平台枚举撤出接口包**：`Platform` 删除，适配器与插件改自交 `PlatformCode` 与 `SourceCode`，实例身份码改用 `ProfileKey`，`make_profile_code` / `platform_of_profile` 换成 `make_profile_key` / `platform_of_key`。
+- **配置身份统一点分串**：`ConfigPath` 的串出口只留 `dotted`（来源、段、键三段，返回 `ConfigPathKey`），删 `__str__`、`KEY_SEP` 与 `FieldKey`，`PrincipalDTO`、`MessageRefDTO`、`SessionDTO`、`TaskDTO` 的联合键属性统一叫 `dotted`，`TaskRequestDTO` 补同名出口，`TaskId`、`ContainerKey` 改名 `TaskKey`、`ContainerCode`，`MsgReferenceDTO` 改名 `MessageRefDTO`。
+- **配置键与段词表整族撤出接口包**：`ConfigKey`、`ConfigSection`、`SECTIONS_BY_PLATFORM` 与 `ProxyMode` 删除，段名与键名改由本体与插件自持，`ConfigSnapshot` 改名 `ConfigValues`。
+- **随包名单、档位表与状态键撤出接口包**：`BUNDLED_PLUGIN_PRIORITY`、`is_enabled`、`resolve_claims`、`StateKey` 删除，随包名单、加载档位、在场判定、命令名抢占与实例状态键归本体，`CommandPriority` 改名 `PluginPriority`，`ManifestKey`、`HelpKey`、`AdapterManifestKey` 改名 `PluginManifestKeys`、`HelpKeys`、`AdapterManifestKeys`，`MANIFEST_FIELDS`、`ADAPTER_MANIFEST_FIELDS` 改名 `PLUGIN_MANIFEST_TABLE`、`ADAPTER_MANIFEST_TABLE`，`ArgsValue` 改名 `FlagValue`，`AdapterFieldSpec` 与 `ManifestFieldSpec` 撤出公开名。
+- **装载与插件目录常量撤出**：`ADAPTERS_PKG`、`PLUGINS_PKG`、`INSTALLED_PLUGINS_NAME`、`INSTALLED_PLUGINS_PKG`、`PluginFileName.STATE` 删除，随包插件树名、外部插件挂载点与适配器装载根归本体，`ADAPTER_DECLARATION_FILE` 改名 `ADAPTER_MANIFEST_FILE`。
+- **适配器入口件六件**：新增 `sections`、`plan_for` 与 `credential`，`plan_for` 改关键字可调用的私有形状，`credential` 新增 `item`，旧的单通道探测交口撤销，进度行状态收成 `RowStatus`。
 - **会话快照撤掉摘要字段**：`SessionDTO` 与 `SessionPatchDTO` 不再带 `summary`，读写会话的件按新形状构造。
-- **AI 配置词表撤出接口包**：`ConfigKey` 只留 `OWNER`、`RECORD_KEEP`、`WAITING`，`ConfigSection` 只留 `DATA`。AI 插件自建段名与键名，盘上段名不变。
+- **异常族收窄**：`TelegramServerError` 改名 `ServerUnreachableError`，`DirectTimeoutError`、`TokenError`、`TokenFormatError` 与代理异常族搬回平台适配器。
+- **平台专属名回适配器**：`MediaGroupId` 从接口包移到 Telegram 适配器，`MessageKey` 暂不对外。
 
 ### ✨ Added
 
-- **配置来源可交保存轮检查计划**：`SourceDeclaration` 新增可选 `probe`，交一份 `ConnectionPlan`，保存配置时随平台那轮并进进度表。
-- **连通检查计划**：`ConnectionPlan`、`ProbeChannel`、`ProbeRow`、`ProbeResult`、`ProbeOutcome`、`PlanVerdict`、`ConfigSnapshot` 与 `PlanFactory` 一起交出，进度行、每路预算、收尾裁决与提示话术都由适配器决定。
-- **字段显隐声明**：`FieldCondition` 与 `FieldSpec.visible_when`，按同段另一个字段的取值决定一行显不显示。
+- **配置来源可交保存轮检查计划**：`SourceDeclaration` 新增可选 `probe` 与 `probe_label`，`probe` 吃 `ConfigValues` 回一份 `ConnectionPlan`，保存配置时随平台那轮并进进度表。
+- **连通检查计划**：`ConnectionPlan`、`ProbeChannel`、`ProbeRow`、`ProbeResult`、`ProbeOutcome` 与 `PlanVerdict` 一起交出，进度行、每路预算、收尾裁决与提示话术都由适配器决定，`PlanVerdict` 新增 `fatal` 旗。
+- **字段显隐与归属标记**：`FieldCondition`、`FieldSpec.visible_when` 与 `FieldSpec.tags`，按同段另一个字段的取值决定一行显不显示，并给字段挂归属标记。
 
 ## [0.2.0] - 2026-11-19
 

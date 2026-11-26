@@ -5,8 +5,8 @@
 
 from dataclasses import dataclass
 
-from ..domain import ChatRole, Platform
-from ..domain.ids import KEY_SEP, ContainerKey, SessionKey, UserId
+from ..domain import ChatRole
+from ..domain.ids import ContainerCode, PlatformCode, SessionKey, UserId
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,13 +27,14 @@ class SessionDTO:
     - 只读投影，禁止原地修改
     """
 
-    platform: Platform
-    container: ContainerKey
+    platform: PlatformCode
+    container: ContainerCode
     messages: tuple[MessageDTO, ...] = ()
 
     @property
-    def session_key(self) -> SessionKey:
-        return SessionKey(f"{self.platform}{KEY_SEP}{self.container}")
+    def dotted(self) -> SessionKey:
+        """交会话身份串"""
+        return SessionKey(f"{self.platform}.{self.container}")
 
 
 @dataclass(frozen=True, slots=True)

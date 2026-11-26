@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from ..domain import ChatScope, ContentKind
 from ..domain.ids import UserId
 from ._content import ContentDTO
-from ._identity import MsgReferenceDTO, PrincipalDTO
+from ._identity import MessageRefDTO, PrincipalDTO
 
 
 @dataclass(frozen=True, slots=True)
@@ -45,7 +45,7 @@ class CommandDTO:
 class InboundEventDTO:
     """入站事件"""
 
-    ref: MsgReferenceDTO
+    ref: MessageRefDTO
     principal: PrincipalDTO
     content: ContentDTO
     scope: ChatScope
@@ -53,7 +53,7 @@ class InboundEventDTO:
     display_name: str = ""  # 落 MessageDTO.sender_name
 
     command: CommandDTO = field(default_factory=CommandDTO)
-    reply_ref: MsgReferenceDTO | None = None
+    reply_ref: MessageRefDTO | None = None
     reply_text: str = ""  # 只取被引用消息的一层文字
     reply_sender_id: UserId = UserId("")  # 被引用消息发言人 id，判身份用
     reply_sender_name: str = ""  # 被引用消息发言人当时显示名

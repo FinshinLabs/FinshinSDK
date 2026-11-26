@@ -12,10 +12,11 @@
 
 ```powershell
 # 在主仓根执行
+python -m pytest finshin/sdk/tests -q
 python -m pytest devtools/tests/test_public_pieces.py devtools/tests/test_command_bind.py
 ```
 
-本仓不带用例，门面代发与命令绑定由主仓那棵树里的用例覆盖，全量口径见 [测试](https://github.com/FinshinLabs/FinshinImpact/blob/main/docs/testing.md)。改过 `src/` 先重装再跑：`.venv\Scripts\uv.exe sync --all-packages --reinstall-package finshin-sdk`，测试读的是装进环境的那一份。
+本仓自带纯函数用例，门面代发与命令绑定仍由主仓那棵树里的用例覆盖，全量口径见 [测试](https://github.com/FinshinLabs/FinshinImpact/blob/main/docs/testing.md)。改过 `src/` 的生效步骤见 [挂载子仓](https://github.com/FinshinLabs/FinshinImpact/blob/main/docs/development.md#挂载子仓)。
 
 ## 对外边界与规范
 

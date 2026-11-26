@@ -1,17 +1,12 @@
-"""平台与会话值对象
+"""会话值对象
 
-- 定义跨平台归一的分类词表
-- 定义实例身份码与平台的双向转换
+- 定义跨平台归一的会话作用域词表
+- 定义实例身份码与平台码的双向转换
 """
 
 from enum import StrEnum
 
-
-class Platform(StrEnum):
-    """平台标识"""
-
-    TELEGRAM = "tg"
-    QQ = "qq"
+from .ids import PlatformCode, ProfileKey
 
 
 class ChatScope(StrEnum):
@@ -25,26 +20,21 @@ class ChatScope(StrEnum):
     UNKNOWN = "unknown"
 
 
-# 身份码分隔符，平台前缀与账号 id 的分界，与键段同用点号
-_PROFILE_CODE_SEP = "."
-
-
-def make_profile_code(platform: Platform, account_id: str) -> str:
+def make_profile_key(platform: PlatformCode, account_id: str) -> ProfileKey:
     """拼装实例身份码
 
-    - 平台值本身即前缀，账号 id 为机器人在该平台的数字 ID
+    - 平台码即前缀，账号 id 为机器人在该平台的数字 ID
     """
-    return f"{platform}{_PROFILE_CODE_SEP}{account_id}"
+    return ProfileKey(f"{platform}.{account_id}")
 
 
-def platform_of_profile(code: str) -> Platform | None:
-    """从身份码解析平台
+def platform_of_key(key: ProfileKey) -> PlatformCode | None:
+    """从身份码解析平台码
 
-    - 前缀不是已知平台返回 None，回落策略由调用方决定
+    - 只按第一个点号切，无点号或前缀为空返回 None
+    - 不校验平台码是否已知，由调用方判
     """
-    # partition 恒返三段，无分隔符时首段即整串，不越界
-    prefix = code.partition(_PROFILE_CODE_SEP)[0]
-    try:
-        return Platform(prefix)
-    except ValueError:
+    prefix, sep, _ = key.partition(".")
+    if not sep or not prefix:
         return None
+    return PlatformCode(prefix)

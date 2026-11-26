@@ -14,7 +14,7 @@ from enum import StrEnum
 _FLAG_NAME_RE = re.compile(r"-[A-Za-z][A-Za-z0-9_-]*")
 
 # 开关值的三种类型，清单写的默认值只能落在这三种上
-ArgsValue = int | float | str
+FlagValue = int | float | str
 
 
 class CommandFlag(StrEnum):
@@ -46,7 +46,7 @@ class BoundCommand:
     - 参数项是第一只开关之前的片段，顺序原样保留
     """
 
-    flags: tuple[tuple[str, ArgsValue | bool], ...] = ()
+    flags: tuple[tuple[str, FlagValue | bool], ...] = ()
     args: tuple[str, ...] = ()
 
 
@@ -70,7 +70,7 @@ def is_flag_name(token: str) -> bool:
     return _FLAG_NAME_RE.fullmatch(token) is not None
 
 
-def _cast(text: str, default: ArgsValue) -> ArgsValue | None:
+def _cast(text: str, default: FlagValue) -> FlagValue | None:
     """按默认值的类型收开关值
 
     - 整数档拒收小数写法，小数档把整数写法转成小数，文本档原样交出
@@ -86,7 +86,7 @@ def _cast(text: str, default: ArgsValue) -> ArgsValue | None:
 
 def bind_command(
     pieces: tuple[str, ...],
-    flags: Sequence[tuple[str, ArgsValue | None]],
+    flags: Sequence[tuple[str, FlagValue | None]],
     takes_args: bool,
 ) -> BoundCommand | BindFailure:
     """按清单声明绑定命令片段
@@ -98,7 +98,7 @@ def bind_command(
     - 开关没登记、同一开关重复、带值开关没吃到值一律绑不进
     """
     defaults = dict(flags)
-    seen: dict[str, ArgsValue | bool] = {}
+    seen: dict[str, FlagValue | bool] = {}
     args: list[str] = []
     index = 0
 
@@ -127,7 +127,7 @@ def bind_command(
         seen[piece] = value
         index += 2
 
-    settled: dict[str, ArgsValue | bool] = {
+    settled: dict[str, FlagValue | bool] = {
         name: (False if default is None else default)
         for name, default in defaults.items()
     }

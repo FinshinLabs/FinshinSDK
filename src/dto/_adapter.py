@@ -6,7 +6,7 @@
 
 from dataclasses import dataclass
 
-from ..domain import Platform
+from ..domain import PlatformCode
 
 
 @dataclass(frozen=True, slots=True)
@@ -18,7 +18,7 @@ class AdapterManifestDTO:
     - 装进环境的适配器带不出这一项，那一路读到的是不设限
     """
 
-    platform: Platform
+    platform: PlatformCode
     deps: tuple[str, ...]
     requires_sdk: str
     entry: str

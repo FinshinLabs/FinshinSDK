@@ -6,18 +6,19 @@
 
 from typing import NewType
 
-# 联合键分段符，键串即文件名安全串
-KEY_SEP = "."
-
-# 容器与键段
-ContainerKey = NewType("ContainerKey", str)  # g/u 前缀
-SessionKey = NewType("SessionKey", str)  # SessionDTO.key
-MessageKey = NewType("MessageKey", str)  # MsgReferenceDTO.key
-PrincipalKey = NewType("PrincipalKey", str)  # PrincipalDTO.key
+# 联合键
+SessionKey = NewType("SessionKey", str)  # SessionDTO.dotted
+MessageKey = NewType("MessageKey", str)  # MessageRefDTO.dotted
+PrincipalKey = NewType("PrincipalKey", str)  # PrincipalDTO.dotted
+TaskKey = NewType("TaskKey", str)  # f"{PrincipalDTO.dotted}.{动作名}"
 
 # 平台原始标识
 ChatId = NewType("ChatId", str)
 UserId = NewType("UserId", str)
 MessageId = NewType("MessageId", str)
-MediaGroupId = NewType("MediaGroupId", str)  # Telegram 相册组标识
-TaskId = NewType("TaskId", str)  # f"{PrincipalDTO.key}.{动作名}"
+
+# 派生单段码
+ContainerCode = NewType("ContainerCode", str)  # g/u 前缀
+PlatformCode = NewType("PlatformCode", str)
+SourceCode = NewType("SourceCode", str)
+ProfileKey = NewType("ProfileKey", str)  # 平台码.账号 id
